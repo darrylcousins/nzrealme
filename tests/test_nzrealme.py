@@ -1,28 +1,39 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-"""
-test_nzrealme
-----------------------------------
-
-Tests for `nzrealme` module.
-"""
-
-import unittest
-
-from nzrealme import nzrealme
+import doctest
 
 
-class TestNzrealme(unittest.TestCase):
+def setUp(test):
+    pass
 
-    def setUp(self):
-        pass
 
-    def test_something(self):
-        pass
+def tearDown(test):
+    pass
 
-    def tearDown(self):
-        pass
 
-if __name__ == '__main__':
-    unittest.main()
+DOCFILES = [
+    'doctests/realme.rst',
+    ]
+
+
+DOCTESTS = [
+    ]
+
+
+def load_tests(loader, tests, ignore):
+
+    list_of_docfiles = DOCFILES
+    for p in list_of_docfiles:
+        tests.addTest(doctest.DocFileSuite(
+            p, setUp=setUp, tearDown=tearDown,
+            optionflags=doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS
+        ))
+
+    list_of_doctests = DOCTESTS
+    for m in list_of_doctests:
+        tests.addTest(doctest.DocTestSuite(
+            __import__(m, globals(), locals(), fromlist=["*"]),
+            setUp=setUp, tearDown=tearDown,
+            optionflags=doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS
+        ))
+
+    return tests

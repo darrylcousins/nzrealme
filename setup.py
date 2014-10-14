@@ -17,6 +17,9 @@ requirements = [
 
 test_requirements = [
     # TODO: put package test requirements here
+    'pytest',
+    'flake8',
+    'sphinx'
 ]
 
 setup(
