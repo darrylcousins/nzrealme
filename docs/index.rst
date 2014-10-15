@@ -9,14 +9,25 @@ Welcome to nzrealme's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    readme
    installation
+   configuration
    usage
    contributing
    authors
    history
+
+Doctest documentation:
+
+.. toctree::
+   :maxdepth: 1
+
+   NZ RealMe <doctests/nzrealme>
+   Service Provider <doctests/serviceprovider>
+   Authentication Request <doctests/authrequest>
+   Logon Strength <doctests/logonstrength>
 
 Indices and tables
 ==================

@@ -4,4 +4,3 @@ NZ RealMe
 
 ::
     
-    >>> print('test')

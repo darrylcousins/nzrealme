@@ -1,6 +1,6 @@
-===============================
-nzrealme
-===============================
+=========
+NZ RealMe
+=========
 
 .. image:: https://badge.fury.io/py/nzrealme.png
     :target: http://badge.fury.io/py/nzrealme
@@ -12,10 +12,30 @@ nzrealme
         :target: https://pypi.python.org/pypi/nzrealme
 
 
-NZ RealMe python package
+This Python package provides an API for integrating your application
+with the New Zealand RealMe login and identity services (formerly "igovt
+logon") using SAML 2.0 messaging.
+
+It is first and foremost a port of `Authen-NZRealMe
+<https://metacpan.org/release/Authen-NZRealMe>`_ (`GitHub
+<https://github.com/catalyst/Authen-NZRealMe>`_) and therefore big thanks to
+the authors of that module:
+
+* Grant McLean <grant@catalyst.net.nz>
+* Haydn Newport <haydn@catalyst.net.nz>
+
+A good deal of the documentation has also been lifted from that module!
+
+You can also look for information at:
+
+* Documentation: https://nzrealme.readthedocs.org.
+* Issue tracker on github: https://github.com/darrylcousins/nzrealme/issues
+* Source code repository on github: https://github.com/darrylcousins/nzrealme
+
+Commercial support and consultancy is available through `Encode Limited
+<http://encode.net.nz>`_
 
 * Free software: BSD license
-* Documentation: https://nzrealme.readthedocs.org.
 
 Features
 --------

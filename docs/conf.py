@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# nzrealme documentation build configuration file, created by
+# NZ RealMe documentation build configuration file, created by
 # sphinx-quickstart on Tue Jul  9 22:26:36 2013.
 #
 # This file is execfile()d with the current directory set to its
@@ -55,7 +55,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'nzrealme'
+project = u'NZ RealMe'
 copyright = u'2014, Darryl Cousins'
 
 # The version info for the project you're documenting, acts as replacement
@@ -209,7 +209,7 @@ latex_elements = {
 # [howto/manual]).
 latex_documents = [
     ('index', 'nzrealme.tex',
-     u'nzrealme Documentation',
+     u'NZ RealMe Documentation',
      u'Darryl Cousins', 'manual'),
 ]
 
@@ -240,7 +240,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'nzrealme',
-     u'nzrealme Documentation',
+     u'NZ RealMe Documentation',
      [u'Darryl Cousins'], 1)
 ]
 
@@ -255,10 +255,10 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index', 'nzrealme',
-     u'nzrealme Documentation',
+     u'NZ RealMe Documentation',
      u'Darryl Cousins',
-     'nzrealme',
-     'One line description of project.',
+     'NZ RealMe',
+     'Python package providing SAML2 authentication for NZ RealMe.',
      'Miscellaneous'),
 ]
 
