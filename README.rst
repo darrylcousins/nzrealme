@@ -3,7 +3,7 @@ NZ RealMe
 =========
 
 .. image:: https://badge.fury.io/py/nzrealme.png
-    :target: http://badge.fury.io/py/nzrealme
+    :target: http://badge.fury.io/darrylcousins/nzrealme
 
 .. image:: https://travis-ci.org/darrylcousins/nzrealme.png?branch=master
         :target: https://travis-ci.org/darrylcousins/nzrealme
