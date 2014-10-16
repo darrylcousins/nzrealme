@@ -5,6 +5,6 @@ sphinx
 tox
 coverage
 lxml
-http://xmlsoft.org/sources/python/libxml2-python-2.6.21.tar.gz
+libxml2-python
 xmlsec
 xmldsig
