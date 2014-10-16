@@ -28,7 +28,7 @@ A good deal of the documentation has also been lifted from that module!
 
 You can also look for information at:
 
-* Documentation: https://nzrealme.readthedocs.org.
+* Documentation: https://nz-realme.readthedocs.org.
 * Issue tracker on github: https://github.com/darrylcousins/nzrealme/issues
 * Source code repository on github: https://github.com/darrylcousins/nzrealme
 
@@ -36,8 +36,3 @@ Commercial support and consultancy is available through `Encode Limited
 <http://encode.net.nz>`_
 
 * Free software: BSD license
-
-Features
---------
-
-* TODO
