@@ -6,5 +6,6 @@ tox
 coverage
 lxml
 libxml2
+-f ftp://xmlsoft.org/libxml2/python libxml2-python
 xmlsec
 xmldsig
