@@ -24,7 +24,7 @@ the authors of that module:
 * Grant McLean <grant@catalyst.net.nz>
 * Haydn Newport <haydn@catalyst.net.nz>
 
-A good deal of the documentation has also been lifted from that module!
+All the **documentation** has been derived from that module!
 
 You can also look for information at:
 
