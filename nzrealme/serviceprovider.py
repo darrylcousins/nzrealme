@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 """ServiceProvider: class representing the local SAML2 Service Provider"""
 import os
+import datetime
 
 from .authrequest import AuthRequest
 from .tokengenerator import TokenGenerator
+from .identityprovider import IdentityProvider
 
 
 __all__ = (
@@ -14,6 +16,19 @@ SERVICE_TYPES = (
     'login',
     'assertion'
     )
+
+URN_NAMEID_FORMAT = {
+    'login': 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
+    'assertion': 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
+    'unspec': 'urn:oasis:names:tc:SAML:2.0:nameid-format:unspecified',
+    }
+
+URN_ATTR_NAME = {
+    'fit': 'urn:nzl:govt:ict:stds:authn:attribute:igovt:IVS:FIT',
+    'ivs': 'urn:nzl:govt:ict:stds:authn:safeb64:attribute:igovt:IVS:Assertion:Identity',
+    'avs': 'urn:nzl:govt:ict:stds:authn:safeb64:attribute:NZPost:AVS:Assertion:Address',
+    'icms_token': 'urn:nzl:govt:ict:stds:authn:safeb64:attribute:opaque_token',
+    }
 
 class ServiceProvider(object):
     """
@@ -33,6 +48,7 @@ class ServiceProvider(object):
     """
     conf_dir = None
     service_type = None
+    identity_provider = None
 
     def __init__(self, conf_dir, service_type='login'):
         """
@@ -50,6 +66,7 @@ class ServiceProvider(object):
         self.service_type = service_type
 
         self.token_generator = TokenGenerator()
+        self.identity_provider = IdentityProvider(self.conf_dir, self.service_type)
 
     def new_request(self, **kwargs):
         """
@@ -90,4 +107,25 @@ class ServiceProvider(object):
         type of request.
         """
         return self.token_generator.saml_id()
+
+    def now_as_iso(self):
+        """
+        Convenience method returns the current time (UTC) formatted as an ISO date/time
+        string.
+
+        >>> datetime.datetime.utcnow().isoformat()
+        '2014-10-16T14:39:42.999290'
+
+        >>> datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+        '2014-10-16T14:42:12Z'
+
+        """
+        return datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+
+    def nameid_format(self):
+        """
+        Returns a string URN representing the format of the NameID (Federated Logon Tag
+        - FLT) requested/expected from the Identity Provider.
+        """
+        return URN_NAMEID_FORMAT[self.service_type]
 

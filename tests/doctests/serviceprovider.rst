@@ -27,3 +27,14 @@ Initialize the Service Provider
 ::
 
     >>> sp = ServiceProvider(os.path.join(test_dir, 'conf'), 'login')
+
+    >>> len(sp.generate_saml_id())
+    40
+
+The time of our request in iso format::
+
+    >>> sp.now_as_iso()
+    '20...-...-...T...:...:...Z'
+
+    >>> sp.nameid_format()
+    'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'

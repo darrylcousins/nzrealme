@@ -4,3 +4,7 @@ flake8
 sphinx
 tox
 coverage
+lxml
+libxml2
+xmlsec
+xmldsig

@@ -12,6 +12,14 @@ nzrealme.authrequest module
     :undoc-members:
     :show-inheritance:
 
+nzrealme.identityprovider module
+--------------------------------
+
+.. automodule:: nzrealme.identityprovider
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 nzrealme.logonstrength module
 -----------------------------
 
@@ -32,6 +40,14 @@ nzrealme.serviceprovider module
 -------------------------------
 
 .. automodule:: nzrealme.serviceprovider
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+nzrealme.tokengenerator module
+------------------------------
+
+.. automodule:: nzrealme.tokengenerator
     :members:
     :undoc-members:
     :show-inheritance:

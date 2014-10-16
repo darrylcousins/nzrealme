@@ -19,6 +19,7 @@ def get_all_available(paths):
 # models used in the tests defined here and imported instead of peppering docs
 BUILTINS = [
     'os',
+    'lxml',
     ]
 
 # and again for the modules used, NB this depends on ``__all`` being defined in
@@ -28,6 +29,7 @@ MODULES = [
     'nzrealme.authrequest',
     'nzrealme.logonstrength',
     'nzrealme.tokengenerator',
+    'nzrealme.identityprovider',
     ]
 
 def setUp(test):
@@ -53,6 +55,7 @@ DOCFILES = [
     'doctests/authrequest.rst',
     'doctests/logonstrength.rst',
     'doctests/tokengenerator.rst',
+    'doctests/identityprovider.rst',
     ]
 
 

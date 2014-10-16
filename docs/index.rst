@@ -27,6 +27,8 @@ Doctest documentation:
    NZ RealMe <doctests/nzrealme>
    Service Provider <doctests/serviceprovider>
    Authentication Request <doctests/authrequest>
+   Identity Provider <doctests/identityprovider>
+   Token Generator <doctests/tokengenerator>
    Logon Strength <doctests/logonstrength>
 
 Indices and tables
