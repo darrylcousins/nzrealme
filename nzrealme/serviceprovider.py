@@ -2,10 +2,12 @@
 """ServiceProvider: class representing the local SAML2 Service Provider"""
 import os
 import datetime
+import urllib
 
 from .authrequest import AuthRequest
 from .tokengenerator import TokenGenerator
 from .identityprovider import IdentityProvider
+from .signature import sign_binary
 
 
 __all__ = (
@@ -29,6 +31,15 @@ URN_ATTR_NAME = {
     'avs': 'urn:nzl:govt:ict:stds:authn:safeb64:attribute:NZPost:AVS:Assertion:Address',
     'icms_token': 'urn:nzl:govt:ict:stds:authn:safeb64:attribute:opaque_token',
     }
+
+SIGNING_CERT_FILENAME = 'sp-sign-crt.pem'
+SIGNING_KEY_FILENAME = 'sp-sign-key.pem'
+SSL_CERT_FILENAME = 'sp-ssl-crt.pem'
+SSL_KEY_FILENAME = 'sp-ssl-key.pem'
+ICMS_WSDL_FILENAME = 'metadata-icms.wsdl'
+CA_CERT_DIRECTORY = 'ca-certs'
+
+RSA_SHA1 = 'http://www.w3.org/2000/09/xmldsig#rsa-sha1'
 
 class ServiceProvider(object):
     """
@@ -128,4 +139,41 @@ class ServiceProvider(object):
         - FLT) requested/expected from the Identity Provider.
         """
         return URN_NAMEID_FORMAT[self.service_type]
+
+    def sign_query_string(self, qs):
+        """
+        Used by :class:`nzrealme.authrequest.AuthRequest` to create a digital
+        signature for the AuthRequest HTTP-Redirect URL.
+        :param qs: The query string
+        :type qs: string
+        """
+        q = {
+            'SigAlg': RSA_SHA1,
+            }
+        qs = '{0}&{1}'.format(qs, urllib.urlencode(q))
+
+        key = self.get_from_file(SIGNING_KEY_FILENAME)
+
+        q = {'Signature':  sign_binary(qs, key)}
+
+        return '{0}&{1}'.format(qs, urllib.urlencode(q))
+
+    def get_from_file(self, filename):
+        """
+        Return the signing key.
+        :param filename: The filename
+        :type filename string
+        """
+        path = os.path.join(self.conf_dir, filename)
+        if not os.path.exists(path):
+            raise ValueError('No path to {0}'.format(filename))
+
+        f = open(path, 'r')
+        data = f.read()
+        f.close()
+
+        if not data:
+            raise ValueError('Cannot load data from {0}'.format(filename))
+
+        return data
 

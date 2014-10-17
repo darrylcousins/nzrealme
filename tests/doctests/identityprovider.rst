@@ -23,6 +23,8 @@ And the important tokens are stored in class attributes::
     >>> idp.resolution_services
     ['https://as.test.fakeme.govt.nz/sso/ArtifactResolver/metaAlias/logon/logonidp']
 
+The ``EntityID``, this is used for the ``Issuer`` in the ``AuthnRequest``::
+
     >>> idp.entity_id
     'https://test.fakeme.govt.nz/saml2'
 

@@ -20,6 +20,10 @@ def get_all_available(paths):
 BUILTINS = [
     'os',
     'lxml',
+    'urllib',
+    'urlparse',
+    'base64',
+    'pprint',
     ]
 
 # and again for the modules used, NB this depends on ``__all`` being defined in
@@ -30,6 +34,8 @@ MODULES = [
     'nzrealme.logonstrength',
     'nzrealme.tokengenerator',
     'nzrealme.identityprovider',
+    'nzrealme.encoder',
+    'nzrealme.signature',
     ]
 
 def setUp(test):
@@ -60,6 +66,8 @@ DOCFILES = [
 
 
 DOCTESTS = [
+    'nzrealme.encoder',
+    'nzrealme.signature',
     ]
 
 

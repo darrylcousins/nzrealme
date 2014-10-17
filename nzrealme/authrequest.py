@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """Generate a SAML2 Authentication Request message"""
 from lxml import etree
+import urllib
 
 from .logonstrength import LogonStrength
+from .encoder import deflate_and_base64_encode
 
 __all__ = (
     'AuthRequest',
@@ -45,65 +47,46 @@ class AuthRequest(object):
         assertion consumer service.
 
     """
-    service_provider = None
-    auth_strength = None
-    allow_create = False
-    force_auth = True
-    relay_state = ''
-
     def __init__(self, service_provider, **kwargs):
         self.allow_create = kwargs.get('allow_create', False)
         self.force_auth = kwargs.get('force_auth', True)
         self.relay_state = kwargs.get('relay_state', '')
         auth_strength = kwargs.get('auth_strength', 'low')
         self.auth_strength = LogonStrength(auth_strength)
+        self.service_provider = service_provider
 
-        self.xml = self._generate_auth_request_doc(service_provider)
-        # self.query_string = sign_query_string(self._raw_query_string)
+        self.saml_request = self.generate_auth_request_doc()
+        self.signed_query_string = service_provider.sign_query_string(self.raw_query_string)
 
-    def _generate_auth_request_doc(self, sp):
+    @property
+    def url(self):
+        """."""
+        return '{0}?{1}'.format(
+            self.service_provider.identity_provider.single_signon_location,
+            self.signed_query_string)
+
+    @property
+    def encoded_saml_request(self):
+        """."""
+        return deflate_and_base64_encode(self.saml_request)
+
+    @property
+    def raw_query_string(self):
+        """."""
+        qs = {'SAMLRequest': self.encoded_saml_request}
+        if self.relay_state:
+            qs['RelayState'] = self.relay_state
+
+        return urllib.urlencode(qs)
+
+    def generate_auth_request_doc(self):
         """
         Generate the authentication xml request document.
 
         sp (object): ServiceProvider instance
 
-        my $x = XML::Generator->new(#':pretty',
-            namespace => [ @$ns_saml, @$ns_samlp ],
-        );
-        $self->{x} = $x;
-
-        $self->{saml_request} = $x->AuthnRequest($ns_samlp,
-            {
-                Version                       => '2.0',
-                ID                            => $self->request_id(),
-                IssueInstant                  => $self->request_time(),
-                Destination                   => $self->destination_url(),
-                $self->service_type eq 'login'
-                    ? (ForceAuthn             => $self->force_auth() )
-                    : (),
-                AssertionConsumerServiceIndex => '0',
-            },
-            $self->_issuer(),
-            $self->_nameid_policy(),
-            $self->service_type eq 'login'
-                ? $self->_authen_context()
-                : (),
-        ) . '';  # ensure result is stringified
-
-xml_found_node_ok($xml, q{/nssamlp:AuthnRequest});
-xml_node_content_is($xml, q{/nssamlp:AuthnRequest/@Version} => '2.0');
-xml_node_content_is($xml, q{/nssamlp:AuthnRequest/@AssertionConsumerServiceIndex} => '0');
-xml_node_content_is($xml, q{/nssamlp:AuthnRequest/@ForceAuthn} => 'true');
-xml_node_content_is($xml, q{/nssamlp:AuthnRequest/@ID} => $req_id);
-xml_node_content_is($xml, q{/nssamlp:AuthnRequest/@IssueInstant} => $req->request_time);
-xml_node_content_is($xml, q{/nssamlp:AuthnRequest/@Destination} => $sp->idp->single_signon_location);
-xml_node_content_is($xml, q{/nssamlp:AuthnRequest/nssaml:Issuer} => $sp->entity_id);
-xml_node_content_is($xml, q{/nssamlp:AuthnRequest/nssamlp:NameIDPolicy/@AllowCreate} => 'false');
-xml_node_content_is($xml, q{/nssamlp:AuthnRequest/nssamlp:NameIDPolicy/@Format}
-    => 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent');
-xml_node_content_is($xml, q{/nssamlp:AuthnRequest/nssamlp:RequestedAuthnContext/nssaml:AuthnContextClassRef}
-    => 'urn:nzl:govt:ict:stds:authn:deployment:GLS:SAML:2.0:ac:classes:LowStrength');
         """
+        sp = self.service_provider
 
         xml = etree.Element(
                 'AuthnRequest',
@@ -132,5 +115,4 @@ xml_node_content_is($xml, q{/nssamlp:AuthnRequest/nssamlp:RequestedAuthnContext/
             nsmap={'saml': NSMAP['saml']})
         iss.text = sp.identity_provider.entity_id
 
-        return xml
-
+        return etree.tounicode(xml, pretty_print=True)
