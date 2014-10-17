@@ -68,14 +68,6 @@ nzrealme.tokengenerator module
     :undoc-members:
     :show-inheritance:
 
-nzrealme.xmlsig module
-----------------------
-
-.. automodule:: nzrealme.xmlsig
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------

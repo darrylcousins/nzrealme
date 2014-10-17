@@ -41,6 +41,7 @@ CA_CERT_DIRECTORY = 'ca-certs'
 
 RSA_SHA1 = 'http://www.w3.org/2000/09/xmldsig#rsa-sha1'
 
+
 class ServiceProvider(object):
     """
     This class is used to represent the local SAML2 SP (Service Provider) which
