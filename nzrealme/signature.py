@@ -49,10 +49,11 @@ __all__ = (
 def sign_binary(string, key):
     """
     Sign a string and return it
+
     :param string: The string to sign
     :type string: string
 
-    :param key The private key
+    :param key: The private key
     :type key: string
 
     """
@@ -68,14 +69,14 @@ def verify_binary(string, signature, cert):
     """
     Validates a signed query string
 
-    :param string The string to validate
-    :type: string
+    :param string: The string to validate
+    :type string:
 
     :param signature: The signature
-    :type: string
+    :type string:
 
     :param cert: The pubic cert
-    :type: string
+    :type string:
     """
     xmlsec.initialize()
 
