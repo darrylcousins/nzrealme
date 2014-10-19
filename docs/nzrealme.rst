@@ -52,10 +52,10 @@ nzrealme.serviceprovider module
     :undoc-members:
     :show-inheritance:
 
-nzrealme.signature module
--------------------------
+nzrealme.signer module
+----------------------
 
-.. automodule:: nzrealme.signature
+.. automodule:: nzrealme.signer
     :members:
     :undoc-members:
     :show-inheritance:

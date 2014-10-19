@@ -50,12 +50,12 @@ def sign_binary(string, key):
     """
     Sign a string and return it
 
-    :param string: The string to sign
-    :type string: string
+    Args:
+        string (str): The string to sign
+        key (str): The private key
 
-    :param key: The private key
-    :type key: string
-
+    Returns:
+        string: Digitial signature for given string
     """
     xmlsec.initialize()
 
@@ -69,14 +69,13 @@ def verify_binary(string, signature, cert):
     """
     Validates a signed query string
 
-    :param string: The string to validate
-    :type string:
+    Args:
+        string (str): The string to validate
+        signature (str): The signature
+        cert (str): The pubic cert
 
-    :param signature: The signature
-    :type string:
-
-    :param cert: The pubic cert
-    :type string:
+    Returns:
+        bool:
     """
     xmlsec.initialize()
 

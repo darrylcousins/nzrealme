@@ -7,13 +7,11 @@ http://stackoverflow.com/questions/1089662/python-inflate-and-deflate-implementa
 
 The deflate/encode method is supposed to duplicate this bit of perl code::
 
-    >>> my $xml    = $self->saml_request();
-    >>> my $data   = '';
-    >>> my $status = rawdeflate \$xml => \$data, Append => 0
-    >>>     or die "Can't compress request data: $RawDeflateError\n";
-    >>> $data = encode_base64($data);
-    >>> $data =~ s{[\r\n]}{}g;
-    >>> return $data;
+    my $xml    = $self->saml_request();
+    my $data   = '';
+    my $status = rawdeflate \$xml => \$data
+    $data = encode_base64($data);
+    return $data;
 
 My investigation found that ``rawdeflate`` compresses data to RFC 1951.
 
@@ -46,14 +44,26 @@ __all__ = (
 def decode_base64_and_inflate(b64string):
     """
     Decode and inflate a compressed string.
+
+    Args:
+        b64string (string): a base64 encoded compressed string
+
+    Returns:
+        String: decoded and decompressed data.
     """
     decoded_data = base64.b64decode(b64string)
     return zlib.decompress(decoded_data, -15)
 
-def deflate_and_base64_encode(string_val):
+def deflate_and_base64_encode(string):
     """
     Deflate and encode a string.
+
+    Args:
+        string (string): string data to be compressed and encoded
+
+    Returns:
+        String: compressed and encoded data
     """
-    zlibbed_str = zlib.compress(string_val)
+    zlibbed_str = zlib.compress(string)
     compressed_string = zlibbed_str[2:-4]
     return base64.b64encode(compressed_string)

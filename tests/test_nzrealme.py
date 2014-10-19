@@ -35,7 +35,7 @@ MODULES = [
     'nzrealme.tokengenerator',
     'nzrealme.identityprovider',
     'nzrealme.encoder',
-    'nzrealme.signature',
+    'nzrealme.signer',
     ]
 
 def setUp(test):
@@ -67,7 +67,7 @@ DOCFILES = [
 
 DOCTESTS = [
     'nzrealme.encoder',
-    'nzrealme.signature',
+    'nzrealme.signer',
     ]
 
 

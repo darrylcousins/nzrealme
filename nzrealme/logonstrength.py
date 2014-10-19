@@ -38,6 +38,9 @@ class LogonStrength(object):
 
     This class is used to encapsulate the URNs and to provide methods for comparing
     the strength of one URN to another.
+
+    Attributes:
+        urn (str): Default to 'urn:nzl:govt:ict:stds:authn:deployment:GLS:SAML:2.0:ac:classes:LowStrength'
     """
     urn = STRENGTH_LOW
 
@@ -54,6 +57,9 @@ class LogonStrength(object):
         """
         Returns the strength score (currently either 10 or 20) which is used when
         comparing strengths using the 'minimum' match type.
+
+        Returns:
+            Int: Numerical strength score.
         """
         return STRENGTH_SCORE[self.urn]
 
@@ -67,6 +73,13 @@ class LogonStrength(object):
         The **match** parameter must be 'exact' or 'minimum' (default
         'minimum').  When comparing different logon strengths, the rules outlined in
         the RealMe Login service SAML v2.0 Messaging Specification are used.
+
+        Args:
+            required (str): Defaults to 'low'
+            match (str): Defaults to 'minimum'
+
+        Returns:
+            Bool:
         """
         pass
 

@@ -35,6 +35,9 @@ class TokenGenerator(object):
         """
         Generates and returns a hex-encoded random token (guaranteed to start with a
         letter) using strong_token if possible and weak_token otherwise.
+
+        Returns:
+            string: hex-encoded random token (with alphabetical first char)
         """
         token = self.strong_token()
         while token[0] in [str(i) for i in range(10)]:
@@ -51,6 +54,9 @@ class TokenGenerator(object):
         a 71-bit value. log_2((26+26+10)^12) =~ 71 bits
 
         Credit to the django project for this code: django.utils.crypto
+
+        Returns:
+            string: hex-encoded random token
         """
         length = 40
         allowed_chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
@@ -71,7 +77,3 @@ class TokenGenerator(object):
                 ).digest())
 
         return ''.join(random.choice(allowed_chars) for i in range(length))
-
-
-
-

@@ -21,21 +21,29 @@ class IdentityProvider(object):
     This class is used to represent the SAML IdP (Identity Provider) which
     implements the RealMe Login service.  An object of this class is initialised
     from the ``metadata-login-idp.xml`` in the configuration directory.
+
+    Attributes:
+        conf_dir (path): the path to key and certificate files.
+        service_type (string): the service type 'login' or 'assert'
     """
 
     def __init__(self, conf_dir, service_type='login'):
         """
         Constructor.  Should not be called directly.  Instead, call the ``get_idp`` method
-        on the service provider object.
+        on the service provider object. Loads metadata on init.
+
+        Args:
+            conf_dir (path): the path to key and certificate files.
+            service_type (string): the service type 'login' or 'assert'. Defaults to 'login'
 
         The ``conf_dir`` parameter **must** be provided.  It specifies the full pathname
         of the directory containing the IdP metadata file.
         """
         self.conf_dir = conf_dir
         self.service_type = service_type
-        self._load_metadata()
+        self.load_metadata()
 
-    def _load_metadata(self):
+    def load_metadata(self):
         """
         Load metadata from file, save in simple dictionary cache and set as class attributes
         """
@@ -43,15 +51,31 @@ class IdentityProvider(object):
         if METADATA_CACHE.get(cache_key, None):
             params = METADATA_CACHE[cache_key]
         else:
-            params = self._read_metadata_from_file()
+            params = self.read_metadata_from_file()
         self.__dict__.update(params)
 
-    def _read_metadata_from_file(self):
+    def read_metadata_from_file(self):
         """
         Gather data from the metadata file.
+
+        Returns:
+            params (dict): Dictionary of read values:
+                * entity_id (string):
+                    The ``ID`` parameter in the Identity Provider metadata file.
+                * single_signon_location (url):
+                    The ``SingleSignOnService`` parameter in the Service
+                    Provider metadata file.
+                * signing_cert_pem_data (string)
+                    The signing certificate (X509 format) text from the
+                    metadata file.  If supplied with a service type, it will
+                    return the certificate appropriate to that type.
+                * resolution_services (list):
+                    The ``ArtifactResolutionService`` parameter in the Service Provider
+                    metadata file, indexed by the indexes in the metadata file.
+
         """
         metadata = {}
-        tree = etree.parse(self._metadata_pathname())
+        tree = etree.parse(self.metadata_pathname())
 
         entity_id = tree.xpath('/md:EntityDescriptor/@entityID', namespaces=NSMAP)[0]
         assert entity_id
@@ -114,7 +138,7 @@ class IdentityProvider(object):
 
         return metadata
 
-    def _metadata_pathname(self):
+    def metadata_pathname(self):
         """Assert the existence of the metadata file"""
         if not self.conf_dir:
             raise ValueError('Configuration directory has not been defined')
@@ -125,35 +149,36 @@ class IdentityProvider(object):
         return metadata_file
 
     def get_cache_key(self):
-        """Simple method to create the cache key"""
+        """Simple method to create the cache key
+
+        Returns:
+            cache_key (string)
+        """
         return '{0}-{1}'.format(self.conf_dir, self.service_type)
 
-    def entity_id(self):
-        """
-        Accessor for the ``ID`` parameter in the Identity Provider metadata file.
-        """
-        pass
 
-    def single_signon_location(self):
+    def get_signing_cert_pem_data(self, service_type='login'):
         """
-        Accessor for the ``SingleSignOnService`` parameter in the Service Provider
-        metadata file.
-        """
-        pass
-
-    def signing_cert_pem_data(self):
-        """
-        Accessor for the signing certificate (X509 format) text from the metadata file.
+        The signing certificate (X509 format) text from the metadata file.
         If supplied with a service type, it will return the certificate appropriate to
         that type.
+
+        Args:
+            service_type (string): 'login' or 'assert', default to 'login'
+
+        Returns:
+            String: The signing pem data.
         """
         pass
 
-    def login_cert_pem_data(self):
+    def get_login_cert_pem_data(self):
         """
-        Accessor for the signing certificate (X509 format) text from the metadata file
+        The signing certificate (X509 format) text from the metadata file
         of the login service.  This is used when resolving the opaque token from the
         identity assertion through the iCMS service.
+
+        Returns:
+            String: The signing pem data.
         """
         pass
 
@@ -162,6 +187,12 @@ class IdentityProvider(object):
         Accessor for the ``ArtifactResolutionService`` parameter in the Service Provider
         metadata file.  When calling this method, you must provide an index number
         (from the artifact).
+
+        Args:
+            idx (int): the index for looking up the artifact from list
+
+        Returns:
+            String:
         """
         pass
 
@@ -169,6 +200,12 @@ class IdentityProvider(object):
         """
         Takes an XML document signed by the Identity provider and returns true if the
         signature is valid.
+
+        Args:
+            doc (xml): the xml document from idp.
+
+        Returns:
+            Bool:
         """
         pass
 
@@ -177,6 +214,12 @@ class IdentityProvider(object):
         Takes a source ID string from an artifact to be resolved and confirms that it
         was generated by this Identity Provider.  Returns true on successs, dies on
         error.
+
+        Args:
+            src_id (str): the identifying id.
+
+        Returns:
+            Bool: True, otherwise will raise.
         """
         pass
 

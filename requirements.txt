@@ -2,6 +2,8 @@ wheel==0.23.0
 pytest
 flake8
 sphinx
+sphinxcontrib-napoleon # for google style docstrings
+sphinx_rtd_theme
 tox
 coverage
 lxml

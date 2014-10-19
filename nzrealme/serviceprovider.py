@@ -7,7 +7,7 @@ import urllib
 from .authrequest import AuthRequest
 from .tokengenerator import TokenGenerator
 from .identityprovider import IdentityProvider
-from .signature import sign_binary
+from .signer import sign_binary
 
 
 __all__ = (
@@ -49,21 +49,31 @@ class ServiceProvider(object):
     the NZ RealMe Assertion service IdP.  In normal use, an object of this class is
     initialised with the file ``metadata-sp.xml`` in the configuration directory.
 
-    conf_dir (str): '/path/to/directory'
-        The ``conf_dir`` parameter **must** be provided.  It specifies the full pathname
-        of the directory containing SP and IdP metadata files as well as certificate
-        and key files for request signing and mutual-SSL.
-
-    service_type (str, 'login'): 'login' or 'assertion'
-        Indicate whether you wish to communicate with the ``login`` service or the
-        ``assertion`` service (for identity information).
+    Attributes:
+        conf_dir (str): '/path/to/directory'
+            The ``conf_dir`` parameter **must** be provided.  It specifies the full pathname
+            of the directory containing SP and IdP metadata files as well as certificate
+            and key files for request signing and mutual-SSL.
+        service_type (str, 'login'): 'login' or 'assertion'
+            Indicate whether you wish to communicate with the ``login`` service or the
+            ``assertion`` service (for identity information).
+        identity_provider (object): :class:`nzrealme.identityprovider.IdentityProvider`
+        token_generator (object): :class:`nzrealme.tokengenerator.TokenGenerator`
     """
     conf_dir = None
     service_type = None
     identity_provider = None
+    token_generator = None
 
     def __init__(self, conf_dir, service_type='login'):
         """
+        Initialise the object, sets up objects,
+        :class:`nzrealme.tokengenerator.TokenGenerator` and
+        :class:`nzrealme.identityprovider.IdentityProvider`
+
+        Args:
+            conf_dir (str): Path to configuration files.
+            service_type (str, 'login'): 'login' or 'assert'
         """
 
         if not os.path.exists(conf_dir):
@@ -91,22 +101,25 @@ class ServiceProvider(object):
         The ``new_request`` method does not **require** any arguments, but accepts the
         following optional keyword arguments:
 
-        allow_create (bool): False
-            Controls whether the user should be allowed to create a new account on the
-            "login" service IdP.  Not used when talking to the "assertion service".
 
-        force_auth (bool): True
-            Controls whether the user will be forced to log in, rather than allowing the
-            reuse of an existing logon session on the IdP.  Not useful, as the login
-            service ignores this option anyway.
+        Args:
+            **kwargs (dict):
+                * allow_create (bool): False
+                    Controls whether the user should be allowed to create a new account on the
+                    "login" service IdP.  Not used when talking to the "assertion service".
 
-        auth_strength (str): 'low'
-            The logon strength required.  May be supplied as a URN, or as keyword ('low',
-            'mod', 'sms', etc).  See :class:`nzrealme.logonstrenght.LogonStrength` for constants.
+                * force_auth (bool): True
+                    Controls whether the user will be forced to log in, rather than allowing the
+                    reuse of an existing logon session on the IdP.  Not useful, as the login
+                    service ignores this option anyway.
 
-        relay_state (str): ''
-            User-supplied string value that will be returned as a URL parameter to the
-            assertion consumer service.
+                * auth_strength (str): 'low'
+                    The logon strength required.  May be supplied as a URN, or as keyword ('low',
+                    'mod', 'sms', etc).  See :class:`nzrealme.logonstrenght.LogonStrength` for constants.
+
+                * relay_state (str): ''
+                    User-supplied string value that will be returned as a URL parameter to the
+                    assertion consumer service.
 
         """
         request = AuthRequest(self, **kwargs)
@@ -117,6 +130,9 @@ class ServiceProvider(object):
         Used by the request classes to generate a unique identifier for each request.
         It accepts one argument, being a string like 'AuthenRequest' to identify the
         type of request.
+
+        Returns:
+            String: Returns unique id as created by :class:`nzrealme.tokengenerator.TokenGenerator`
         """
         return self.token_generator.saml_id()
 
@@ -125,9 +141,11 @@ class ServiceProvider(object):
         Convenience method returns the current time (UTC) formatted as an ISO date/time
         string.
 
+        Returns:
+            String: UTC current datetime as formatted string
+
         >>> datetime.datetime.utcnow().isoformat()
         '2014-10-16T14:39:42.999290'
-
         >>> datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
         '2014-10-16T14:42:12Z'
 
@@ -136,8 +154,9 @@ class ServiceProvider(object):
 
     def nameid_format(self):
         """
-        Returns a string URN representing the format of the NameID (Federated Logon Tag
-        - FLT) requested/expected from the Identity Provider.
+        Returns:
+            string: URN representing the format of the NameID (Federated Logon
+                Tag - FLT) requested/expected from the Identity Provider.
         """
         return URN_NAMEID_FORMAT[self.service_type]
 
@@ -145,8 +164,12 @@ class ServiceProvider(object):
         """
         Used by :class:`nzrealme.authrequest.AuthRequest` to create a digital
         signature for the AuthRequest HTTP-Redirect URL.
-        :param qs: The query string
-        :type qs: string
+
+        Args:
+            qs (str): The query string
+
+        Returns:
+            string: signed, url formatted query string
         """
         q = {
             'SigAlg': RSA_SHA1,
@@ -162,8 +185,12 @@ class ServiceProvider(object):
     def get_from_file(self, filename):
         """
         Return the signing key.
-        :param filename: The filename
-        :type filename string
+
+        Args:
+            filename (str): The filename
+
+        Returns:
+            string: the coded signing key
         """
         path = os.path.join(self.conf_dir, filename)
         if not os.path.exists(path):
