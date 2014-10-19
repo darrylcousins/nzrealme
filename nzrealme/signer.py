@@ -60,10 +60,12 @@ def sign_binary(string, key):
     xmlsec.initialize()
 
     dsig_ctx = xmlsec.DSigCtx()
-    dsig_ctx.signKey = xmlsec.Key.loadMemory(key, xmlsec.KeyDataFormatPem, None)
+    dsig_ctx.signKey = xmlsec.Key.loadMemory(
+        key, xmlsec.KeyDataFormatPem, None)
 
     signature = dsig_ctx.signBinary(string, xmlsec.TransformRsaSha1)
     return base64.b64encode(signature)
+
 
 def verify_binary(string, signature, cert):
     """
@@ -80,7 +82,8 @@ def verify_binary(string, signature, cert):
     xmlsec.initialize()
 
     dsig_ctx = xmlsec.DSigCtx()
-    dsig_ctx.signKey = xmlsec.Key.loadMemory(cert, xmlsec.KeyDataFormatCertPem, None)
+    dsig_ctx.signKey = xmlsec.Key.loadMemory(
+        cert, xmlsec.KeyDataFormatCertPem, None)
 
     try:
         dsig_ctx.verifyBinary(string, xmlsec.TransformRsaSha1, signature)
@@ -88,4 +91,3 @@ def verify_binary(string, signature, cert):
         return False
 
     return True
-

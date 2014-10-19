@@ -83,7 +83,9 @@ The url to be sent to::
 Verify the query string
 -----------------------
 
-Check the query can be verified using :class:`nzrealme.signature.verify_binary`. First construct the original string that was used::
+Check the query can be verified using
+:class:`nzrealme.signature.verify_binary`. First construct the original string
+that was used::
 
     >>> q = {'SigAlg': 'http://www.w3.org/2000/09/xmldsig#rsa-sha1'}
     >>> init_qs = '{0}&{1}'.format(request.raw_query_string, urllib.urlencode(q))

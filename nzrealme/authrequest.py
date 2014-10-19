@@ -15,6 +15,7 @@ NSMAP = {
     'samlp': 'urn:oasis:names:tc:SAML:2.0:protocol',
     }
 
+
 class AuthRequest(object):
     """
     This class is used by the
@@ -30,15 +31,15 @@ class AuthRequest(object):
     following optional keyword arguments:
 
     Attributes:
-        allow_create (bool): Controls whether the user should be allowed to create
-            a new account on the "login" service IdP.  Not used when talking to the
-            "assertion service". Default to False
+        allow_create (bool): Controls whether the user should be allowed to
+            create a new account on the "login" service IdP.  Not used when
+            talking to the "assertion service". Default to False
         force_auth (bool): Controls whether the user will be forced to log in,
             rather than allowing the reuse of an existing logon session on the
             IdP.  Not useful, as the login service ignores this option anyway.
             Default to True
-        auth_strength (str):The logon strength required.  May be supplied as a URN,
-            or as keyword ('low', 'mod', 'sms', etc).  See
+        auth_strength (str):The logon strength required.  May be supplied as a
+            URN, or as keyword ('low', 'mod', 'sms', etc).  See
             :class:`nzrealme.logonstrenght.LogonStrength` for constants.
             Defaults to 'low'
         relay_state (str): User-supplied string value that will be returned as
@@ -50,7 +51,8 @@ class AuthRequest(object):
         Initialise attributes, create the request and signed query string.
 
         Args:
-            service_provider (ServiceProvider): :class:`nzrealme.serviceprovider.ServiceProvider`
+            service_provider (ServiceProvider):
+                :class:`nzrealme.serviceprovider.ServiceProvider`
             **kwargs (dict): See class attributes
         """
         self.allow_create = kwargs.get('allow_create', False)
@@ -60,7 +62,8 @@ class AuthRequest(object):
         self.auth_strength = LogonStrength(auth_strength)
         self.service_provider = service_provider
         self.saml_request = self.generate_auth_request_doc()
-        self.signed_query_string = service_provider.sign_query_string(self.raw_query_string)
+        self.signed_query_string = service_provider.sign_query_string(
+            self.raw_query_string)
 
     @property
     def url(self):
@@ -103,8 +106,8 @@ class AuthRequest(object):
         sp = self.service_provider
 
         xml = etree.Element(
-                'AuthnRequest',
-                nsmap={None: NSMAP['samlp'], 'saml': NSMAP['saml']})
+            'AuthnRequest',
+            nsmap={None: NSMAP['samlp'], 'saml': NSMAP['saml']})
         xml.set('Version', '2.0')
         xml.set('ID', sp.generate_saml_id())
         xml.set('IssueInstant', sp.now_as_iso())
@@ -119,12 +122,14 @@ class AuthRequest(object):
             nidp.set('AllowCreate', 'true' if self.allow_create else 'false')
 
             rac = etree.SubElement(xml, 'RequestedAuthnContext')
-            accr = etree.SubElement(rac,
+            accr = etree.SubElement(
+                rac,
                 '{{{0}}}AuthnContextClassRef'.format(NSMAP['saml']),
                 nsmap={'saml': NSMAP['saml']})
             accr.text = self.auth_strength.urn
 
-        iss = etree.SubElement(xml,
+        iss = etree.SubElement(
+            xml,
             '{{{0}}}Issuer'.format(NSMAP['saml']),
             nsmap={'saml': NSMAP['saml']})
         iss.text = sp.identity_provider.entity_id

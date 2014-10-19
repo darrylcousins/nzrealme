@@ -54,6 +54,7 @@ def decode_base64_and_inflate(b64string):
     decoded_data = base64.b64decode(b64string)
     return zlib.decompress(decoded_data, -15)
 
+
 def deflate_and_base64_encode(string):
     """
     Deflate and encode a string.

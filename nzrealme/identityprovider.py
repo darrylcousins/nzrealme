@@ -7,7 +7,7 @@ __all__ = (
     'IdentityProvider',
     )
 
-SOAP_BINDING = 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP';
+SOAP_BINDING = 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP'
 
 NSMAP = {
     'md': 'urn:oasis:names:tc:SAML:2.0:metadata',
@@ -16,11 +16,13 @@ NSMAP = {
 
 METADATA_CACHE = {}
 
+
 class IdentityProvider(object):
     """
     This class is used to represent the SAML IdP (Identity Provider) which
-    implements the RealMe Login service.  An object of this class is initialised
-    from the ``metadata-login-idp.xml`` in the configuration directory.
+    implements the RealMe Login service.  An object of this class is
+    initialised from the ``metadata-login-idp.xml`` in the configuration
+    directory.
 
     Attributes:
         conf_dir (path): the path to key and certificate files.
@@ -29,15 +31,17 @@ class IdentityProvider(object):
 
     def __init__(self, conf_dir, service_type='login'):
         """
-        Constructor.  Should not be called directly.  Instead, call the ``get_idp`` method
-        on the service provider object. Loads metadata on init.
+        Constructor.  Should not be called directly.  Instead, call the
+        ``get_idp`` method on the service provider object. Loads metadata on
+        init.
 
         Args:
             conf_dir (path): the path to key and certificate files.
-            service_type (string): the service type 'login' or 'assert'. Defaults to 'login'
+            service_type (string): the service type 'login' or 'assert'.
+                Defaults to 'login'
 
-        The ``conf_dir`` parameter **must** be provided.  It specifies the full pathname
-        of the directory containing the IdP metadata file.
+        The ``conf_dir`` parameter **must** be provided.  It specifies the full
+        pathname of the directory containing the IdP metadata file.
         """
         self.conf_dir = conf_dir
         self.service_type = service_type
@@ -45,7 +49,8 @@ class IdentityProvider(object):
 
     def load_metadata(self):
         """
-        Load metadata from file, save in simple dictionary cache and set as class attributes
+        Load metadata from file, save in simple dictionary cache and set as
+        class attributes
         """
         cache_key = self.get_cache_key()
         if METADATA_CACHE.get(cache_key, None):
@@ -61,7 +66,8 @@ class IdentityProvider(object):
         Returns:
             params (dict): Dictionary of read values:
                 * entity_id (string):
-                    The ``ID`` parameter in the Identity Provider metadata file.
+                    The ``ID`` parameter in the Identity Provider metadata
+                    file.
                 * single_signon_location (url):
                     The ``SingleSignOnService`` parameter in the Service
                     Provider metadata file.
@@ -70,35 +76,38 @@ class IdentityProvider(object):
                     metadata file.  If supplied with a service type, it will
                     return the certificate appropriate to that type.
                 * resolution_services (list):
-                    The ``ArtifactResolutionService`` parameter in the Service Provider
-                    metadata file, indexed by the indexes in the metadata file.
+                    The ``ArtifactResolutionService`` parameter in the Service
+                    Provider metadata file, indexed by the indexes in the
+                    metadata file.
 
         """
         metadata = {}
         tree = etree.parse(self.metadata_pathname())
 
-        entity_id = tree.xpath('/md:EntityDescriptor/@entityID', namespaces=NSMAP)[0]
+        entity_id = tree.xpath(
+            '/md:EntityDescriptor/@entityID',
+            namespaces=NSMAP)[0]
         assert entity_id
         metadata['entity_id'] = entity_id
 
         single_signon_location = tree.xpath(
-            '/md:EntityDescriptor/md:IDPSSODescriptor/md:SingleSignOnService/@Location',
+            '/md:EntityDescriptor/md:IDPSSODescriptor/md:SingleSignOnService/@Location',  # nopep8
             namespaces=NSMAP)[0]
         assert single_signon_location
         metadata['single_signon_location'] = single_signon_location
 
         signing_cert_pem_data = tree.xpath(
-            '/md:EntityDescriptor/md:IDPSSODescriptor/md:KeyDescriptor[@use="signing"]/ds:KeyInfo/ds:X509Data/ds:X509Certificate',
+            '/md:EntityDescriptor/md:IDPSSODescriptor/md:KeyDescriptor[@use="signing"]/ds:KeyInfo/ds:X509Data/ds:X509Certificate',  # nopep8
             namespaces=NSMAP)[0].text
         assert signing_cert_pem_data
-        signing_cert_pem_data = "-----BEGIN CERTIFICATE-----\n{0}\n-----END CERTIFICATE-----\n".format(
+        signing_cert_pem_data = "-----BEGIN CERTIFICATE-----\n{0}\n-----END CERTIFICATE-----\n".format(  # nopep8
             signing_cert_pem_data.strip())
         metadata['signing_cert_pem_data'] = signing_cert_pem_data
 
         resolution_services = []
 
         for node in tree.xpath(
-            '/md:EntityDescriptor/md:IDPSSODescriptor/md:ArtifactResolutionService',
+            '/md:EntityDescriptor/md:IDPSSODescriptor/md:ArtifactResolutionService',  # nopep8
             namespaces=NSMAP):
             index = node.xpath('./@index')[0]
             try:
@@ -145,7 +154,8 @@ class IdentityProvider(object):
         metadata_file = os.path.join(
             self.conf_dir, 'metadata-{0}-idp.xml'.format(self.service_type))
         if not os.path.exists(metadata_file):
-            raise ValueError('Metadata file not found: {0}'.format(metadata_file))
+            raise ValueError(
+                'Metadata file not found: {0}'.format(metadata_file))
         return metadata_file
 
     def get_cache_key(self):
@@ -156,12 +166,11 @@ class IdentityProvider(object):
         """
         return '{0}-{1}'.format(self.conf_dir, self.service_type)
 
-
     def get_signing_cert_pem_data(self, service_type='login'):
         """
-        The signing certificate (X509 format) text from the metadata file.
-        If supplied with a service type, it will return the certificate appropriate to
-        that type.
+        The signing certificate (X509 format) text from the metadata file. If
+        supplied with a service type, it will return the certificate
+        appropriate to that type.
 
         Args:
             service_type (string): 'login' or 'assert', default to 'login'
@@ -173,9 +182,9 @@ class IdentityProvider(object):
 
     def get_login_cert_pem_data(self):
         """
-        The signing certificate (X509 format) text from the metadata file
-        of the login service.  This is used when resolving the opaque token from the
-        identity assertion through the iCMS service.
+        The signing certificate (X509 format) text from the metadata file of
+        the login service.  This is used when resolving the opaque token from
+        the identity assertion through the iCMS service.
 
         Returns:
             String: The signing pem data.
@@ -184,9 +193,9 @@ class IdentityProvider(object):
 
     def artifact_resolution_location(self, idx):
         """
-        Accessor for the ``ArtifactResolutionService`` parameter in the Service Provider
-        metadata file.  When calling this method, you must provide an index number
-        (from the artifact).
+        Accessor for the ``ArtifactResolutionService`` parameter in the Service
+        Provider metadata file.  When calling this method, you must provide an
+        index number (from the artifact).
 
         Args:
             idx (int): the index for looking up the artifact from list
@@ -198,8 +207,8 @@ class IdentityProvider(object):
 
     def verify_signature(self, doc):
         """
-        Takes an XML document signed by the Identity provider and returns true if the
-        signature is valid.
+        Takes an XML document signed by the Identity provider and returns true
+        if the signature is valid.
 
         Args:
             doc (xml): the xml document from idp.
@@ -211,9 +220,9 @@ class IdentityProvider(object):
 
     def validate_source_id(self, src_id):
         """
-        Takes a source ID string from an artifact to be resolved and confirms that it
-        was generated by this Identity Provider.  Returns true on successs, dies on
-        error.
+        Takes a source ID string from an artifact to be resolved and confirms
+        that it was generated by this Identity Provider.  Returns true on
+        successs, dies on error.
 
         Args:
             src_id (str): the identifying id.
@@ -222,6 +231,3 @@ class IdentityProvider(object):
             Bool: True, otherwise will raise.
         """
         pass
-
-
-

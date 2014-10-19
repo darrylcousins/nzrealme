@@ -26,10 +26,14 @@ URN_NAMEID_FORMAT = {
     }
 
 URN_ATTR_NAME = {
-    'fit': 'urn:nzl:govt:ict:stds:authn:attribute:igovt:IVS:FIT',
-    'ivs': 'urn:nzl:govt:ict:stds:authn:safeb64:attribute:igovt:IVS:Assertion:Identity',
-    'avs': 'urn:nzl:govt:ict:stds:authn:safeb64:attribute:NZPost:AVS:Assertion:Address',
-    'icms_token': 'urn:nzl:govt:ict:stds:authn:safeb64:attribute:opaque_token',
+    'fit':
+        'urn:nzl:govt:ict:stds:authn:attribute:igovt:IVS:FIT',
+    'ivs':
+        'urn:nzl:govt:ict:stds:authn:safeb64:attribute:igovt:IVS:Assertion:Identity',  # nopep8
+    'avs':
+        'urn:nzl:govt:ict:stds:authn:safeb64:attribute:NZPost:AVS:Assertion:Address',  # nopep8
+    'icms_token':
+        'urn:nzl:govt:ict:stds:authn:safeb64:attribute:opaque_token',
     }
 
 SIGNING_CERT_FILENAME = 'sp-sign-crt.pem'
@@ -45,20 +49,24 @@ RSA_SHA1 = 'http://www.w3.org/2000/09/xmldsig#rsa-sha1'
 class ServiceProvider(object):
     """
     This class is used to represent the local SAML2 SP (Service Provider) which
-    will be used to access the NZ RealMe Login service IdP (Identity Provider) or
-    the NZ RealMe Assertion service IdP.  In normal use, an object of this class is
-    initialised with the file ``metadata-sp.xml`` in the configuration directory.
+    will be used to access the NZ RealMe Login service IdP (Identity Provider)
+    or the NZ RealMe Assertion service IdP.  In normal use, an object of this
+    class is initialised with the file ``metadata-sp.xml`` in the configuration
+    directory.
 
     Attributes:
         conf_dir (str): '/path/to/directory'
-            The ``conf_dir`` parameter **must** be provided.  It specifies the full pathname
-            of the directory containing SP and IdP metadata files as well as certificate
-            and key files for request signing and mutual-SSL.
+            The ``conf_dir`` parameter **must** be provided.  It specifies the
+            full pathname of the directory containing SP and IdP metadata files
+            as well as certificate and key files for request signing and
+            mutual-SSL.
         service_type (str, 'login'): 'login' or 'assertion'
-            Indicate whether you wish to communicate with the ``login`` service or the
-            ``assertion`` service (for identity information).
-        identity_provider (object): :class:`nzrealme.identityprovider.IdentityProvider`
-        token_generator (object): :class:`nzrealme.tokengenerator.TokenGenerator`
+            Indicate whether you wish to communicate with the ``login`` service
+            or the ``assertion`` service (for identity information).
+        identity_provider (object):
+            :class:`nzrealme.identityprovider.IdentityProvider`
+        token_generator (object):
+            :class:`nzrealme.tokengenerator.TokenGenerator`
     """
     conf_dir = None
     service_type = None
@@ -88,38 +96,44 @@ class ServiceProvider(object):
         self.service_type = service_type
 
         self.token_generator = TokenGenerator()
-        self.identity_provider = IdentityProvider(self.conf_dir, self.service_type)
+        self.identity_provider = IdentityProvider(
+            self.conf_dir, self.service_type)
 
     def new_request(self, **kwargs):
         """
-        Creates a new :class:`nzrealme.authrequest.AuthRequest` object.  The caller would
-        typically use the ``as_url`` method of the request to redirect the client to the
-        Identity Provider's single logon service.  The request object's ``request_id``
-        method should be used to get the request ID and save it in session state for
-        use later during artifact resolution.
+        Creates a new :class:`nzrealme.authrequest.AuthRequest` object.  The
+        caller would typically use the ``as_url`` method of the request to
+        redirect the client to the Identity Provider's single logon service.
+        The request object's ``request_id`` method should be used to get the
+        request ID and save it in session state for use later during artifact
+        resolution.
 
-        The ``new_request`` method does not **require** any arguments, but accepts the
-        following optional keyword arguments:
+        The ``new_request`` method does not **require** any arguments, but
+        accepts the following optional keyword arguments:
 
 
         Args:
             **kwargs (dict):
                 * allow_create (bool): False
-                    Controls whether the user should be allowed to create a new account on the
-                    "login" service IdP.  Not used when talking to the "assertion service".
+                    Controls whether the user should be allowed to create a new
+                    account on the "login" service IdP.  Not used when talking
+                    to the "assertion service".
 
                 * force_auth (bool): True
-                    Controls whether the user will be forced to log in, rather than allowing the
-                    reuse of an existing logon session on the IdP.  Not useful, as the login
-                    service ignores this option anyway.
+                    Controls whether the user will be forced to log in, rather
+                    than allowing the reuse of an existing logon session on the
+                    IdP.  Not useful, as the login service ignores this option
+                    anyway.
 
                 * auth_strength (str): 'low'
-                    The logon strength required.  May be supplied as a URN, or as keyword ('low',
-                    'mod', 'sms', etc).  See :class:`nzrealme.logonstrenght.LogonStrength` for constants.
+                    The logon strength required.  May be supplied as a URN, or
+                    as keyword ('low', 'mod', 'sms', etc).  See
+                    :class:`nzrealme.logonstrenght.LogonStrength` for
+                    constants.
 
                 * relay_state (str): ''
-                    User-supplied string value that will be returned as a URL parameter to the
-                    assertion consumer service.
+                    User-supplied string value that will be returned as a URL
+                    parameter to the assertion consumer service.
 
         """
         request = AuthRequest(self, **kwargs)
@@ -127,19 +141,20 @@ class ServiceProvider(object):
 
     def generate_saml_id(self):
         """
-        Used by the request classes to generate a unique identifier for each request.
-        It accepts one argument, being a string like 'AuthenRequest' to identify the
-        type of request.
+        Used by the request classes to generate a unique identifier for each
+        request.  It accepts one argument, being a string like 'AuthenRequest'
+        to identify the type of request.
 
         Returns:
-            String: Returns unique id as created by :class:`nzrealme.tokengenerator.TokenGenerator`
+            String: Returns unique id as created by
+                :class:`nzrealme.tokengenerator.TokenGenerator`
         """
         return self.token_generator.saml_id()
 
     def now_as_iso(self):
         """
-        Convenience method returns the current time (UTC) formatted as an ISO date/time
-        string.
+        Convenience method returns the current time (UTC) formatted as an ISO
+        date/time string.
 
         Returns:
             String: UTC current datetime as formatted string
@@ -204,4 +219,3 @@ class ServiceProvider(object):
             raise ValueError('Cannot load data from {0}'.format(filename))
 
         return data
-

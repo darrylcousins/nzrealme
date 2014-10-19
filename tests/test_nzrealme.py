@@ -6,8 +6,8 @@ import os
 
 def get_all_available(paths):
     """
-    Get the methods and classes from the paths defined. Requires that the module
-    has an ``__all__`` attribute to use.
+    Get the methods and classes from the paths defined. Requires that the
+    module has an ``__all__`` attribute to use.
     """
     for path in paths:
         fromlist = path.split('.')
@@ -37,6 +37,7 @@ MODULES = [
     'nzrealme.encoder',
     'nzrealme.signer',
     ]
+
 
 def setUp(test):
     test.globs['test_dir'] = os.path.dirname(__file__)
