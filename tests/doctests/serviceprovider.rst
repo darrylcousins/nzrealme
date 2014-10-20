@@ -38,3 +38,8 @@ The time of our request in iso format::
 
     >>> sp.nameid_format()
     'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'
+
+Valid until date comes from 'sp-sign-crt.pem' as an iso formated utc date time::
+
+    >>> sp.valid_until_datetime()
+    '2014-08-15T06:22:16Z'

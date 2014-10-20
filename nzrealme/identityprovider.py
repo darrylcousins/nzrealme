@@ -178,7 +178,7 @@ class IdentityProvider(object):
         Returns:
             String: The signing pem data.
         """
-        pass
+        return self.signing_cert_pem_data
 
     def get_login_cert_pem_data(self):
         """
@@ -189,9 +189,14 @@ class IdentityProvider(object):
         Returns:
             String: The signing pem data.
         """
-        pass
+        cache_key = '{0}-{1}'.format(self.conf_dir, self.service_type)
+        if METADATA_CACHE.get(cache_key, None):
+            params = METADATA_CACHE[cache_key]
+        else:
+            params = self.read_metadata_from_file()
+        return params['signing_cert_pem_data']
 
-    def artifact_resolution_location(self, idx):
+    def get_artifact_resolution_location(self, idx):
         """
         Accessor for the ``ArtifactResolutionService`` parameter in the Service
         Provider metadata file.  When calling this method, you must provide an
@@ -203,7 +208,10 @@ class IdentityProvider(object):
         Returns:
             String:
         """
-        pass
+        try:
+            return self.resolution_services[idx]
+        except IndexError:
+            raise ValueError('Unable to locate resolution with index: {0}'.format(idx))
 
     def verify_signature(self, doc):
         """
@@ -231,3 +239,11 @@ class IdentityProvider(object):
             Bool: True, otherwise will raise.
         """
         pass
+
+        # my $got = encode_base64($source_id, '');
+        # my $exp = sha1_base64( $self->entity_id );
+        # s/=+$// foreach ( $got, $exp);
+        # return 1 if $got eq $exp;
+        # die "Invalid SourceID during artifact resolution\n"
+        #     . "Got     : '$got'\n"
+        #     . "Expected: '$exp'\n";

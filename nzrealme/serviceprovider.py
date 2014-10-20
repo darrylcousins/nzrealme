@@ -3,6 +3,9 @@
 import os
 import datetime
 import urllib
+import pytz
+
+from OpenSSL import crypto
 
 from .authrequest import AuthRequest
 from .tokengenerator import TokenGenerator
@@ -219,3 +222,22 @@ class ServiceProvider(object):
             raise ValueError('Cannot load data from {0}'.format(filename))
 
         return data
+
+    def metadata_to_xml(self):
+        """
+        Serialises the current Service Provider config parameters to a SAML2
+        EntityDescriptor metadata document.
+        """
+        pass
+
+    def valid_until_datetime(self):
+        """
+        Calculate valid until datetime
+        """
+        cert = crypto.load_certificate(
+            crypto.FILETYPE_PEM,
+            self.get_from_file(SIGNING_CERT_FILENAME))
+        return datetime.datetime.strptime(
+            cert.get_notAfter(),
+            '%Y%m%d%H%M%SZ').replace(
+                tzinfo=pytz.UTC).strftime('%Y-%m-%dT%H:%M:%SZ')

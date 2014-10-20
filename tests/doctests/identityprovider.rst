@@ -15,7 +15,7 @@ This class is not intended to be used directly and is created with the
 
 On creation the IdentityProvider loads metadata from the file::
 
-    >>> idp._metadata_pathname()
+    >>> idp.metadata_pathname()
     '/.../nzrealme/nzrealme/tests/conf/metadata-login-idp.xml'
 
 And the important tokens are stored in class attributes::
@@ -54,3 +54,20 @@ The destination url::
     nv8TV6OwdEoqMNCPozBegc27rf6AixerOnOJk1hMVLq4GM3Dy0O1qPC3tniFbzUv
     gCNF
     -----END CERTIFICATE-----
+
+Other assessors
+---------------
+
+Test other attributes::
+
+    >>> print(idp.get_login_cert_pem_data())
+    -----BEGIN CERTIFICATE-----
+    ...
+    -----END CERTIFICATE-----
+    >>> print(idp.get_signing_cert_pem_data())
+    -----BEGIN CERTIFICATE-----
+    ...
+    -----END CERTIFICATE-----
+
+    >>> idp.get_artifact_resolution_location(0)
+    'https://as.test.fakeme.govt.nz/sso/ArtifactResolver/metaAlias/logon/logonidp'
