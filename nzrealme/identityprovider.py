@@ -211,7 +211,8 @@ class IdentityProvider(object):
         try:
             return self.resolution_services[idx]
         except IndexError:
-            raise ValueError('Unable to locate resolution with index: {0}'.format(idx))
+            raise ValueError(
+                'Unable to locate resolution with index: {0}'.format(idx))
 
     def verify_signature(self, doc):
         """

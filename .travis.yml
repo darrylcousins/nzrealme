@@ -9,5 +9,8 @@ install:
   - sudo apt-get install -qq swig python-dev libxml2-dev libxmlsec1-dev
   - 'travis_retry pip install -r requirements.txt'
 
-# command to run tests, e.g. python setup.py test
-script: python setup.py test
+script:
+  - 'flake8 nzrealme tests'
+  - 'coverage run --source nzrealme setup.py test'
+  - 'coverage report -m'
+  - 'python setup.py test'
