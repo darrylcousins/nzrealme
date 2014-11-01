@@ -16,7 +16,7 @@ This class is not intended to be used directly and is created with the
 On creation the IdentityProvider loads metadata from the file::
 
     >>> idp.metadata_pathname()
-    '/.../nzrealme/nzrealme/tests/conf/metadata-login-idp.xml'
+    '/...nzrealme/tests/conf/metadata-login-idp.xml'
 
 And the important tokens are stored in class attributes::
 
