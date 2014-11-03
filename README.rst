@@ -2,13 +2,13 @@
 NZ RealMe
 =========
 
-.. image:: https://badge.fury.io/py/nzrealme.png
+.. https://badge.fury.io/py/nzrealme.png
     :target: http://badge.fury.io/py/nzrealme
 
 .. image:: https://travis-ci.org/darrylcousins/nzrealme.png?branch=master
         :target: https://travis-ci.org/darrylcousins/nzrealme
 
-.. image:: https://pypip.in/d/nzrealme/badge.png
+.. https://pypip.in/d/nzrealme/badge.png
         :target: https://pypi.python.org/pypi/nzrealme
 
 Development repository only
