@@ -14,10 +14,7 @@ Or, if you have virtualenvwrapper installed::
 Potential problems
 ==================
 
-
-lxml
-dm.xmlsec.binding
-pyOpenSSL
+Installation of xml bindings ``lxml`` and ``dm.xmsec.binding`` `https://github.com/onelogin/python-saml/issues/30`_.
 
 From your ``virtualenv`` root directory clone the repository::
 

@@ -11,6 +11,10 @@ NZ RealMe
 .. image:: https://pypip.in/d/nzrealme/badge.png
         :target: https://pypi.python.org/pypi/nzrealme
 
+Development repository only
+===========================
+
+Please note that this project is under development and is not ready for use.
 
 This Python package provides an API for integrating your application
 with the New Zealand RealMe login and identity services (formerly "igovt
