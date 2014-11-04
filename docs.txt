@@ -1,0 +1,4 @@
+wheel==0.23.0
+sphinx
+sphinxcontrib-napoleon # for google style docstrings
+sphinx_rtd_theme
