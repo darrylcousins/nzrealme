@@ -8,7 +8,7 @@ NZ RealMe
 .. image:: https://travis-ci.org/darrylcousins/nzrealme.png?branch=master
         :target: https://travis-ci.org/darrylcousins/nzrealme
 
-.. image:: https://readthedocs.org/projects/nz-realme/?badge=latest
+.. image:: https://readthedocs.org/projects/nz-realme/badge/?version=latest
         :target: http://nz-realme.readthedocs.org/en/latest/
 
 .. https://pypip.in/d/nzrealme/badge.png
