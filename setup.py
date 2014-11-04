@@ -12,11 +12,14 @@ readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 requirements = [
-    # TODO: put package requirements here
+    'M2Crypto==0.22.3',
+    'dm.xmlsec.binding==1.3.1',
+    'isodate==0.5.0',
+    'defusedxml==0.4.1',
+    'python-saml',
 ]
 
 test_requirements = [
-    # TODO: put package test requirements here
     'pytest',
     'flake8',
     'sphinx'
@@ -39,19 +42,17 @@ setup(
     install_requires=requirements,
     license="BSD",
     zip_safe=False,
-    keywords='nzrealme',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
-        "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
     ],
     test_suite='tests',
-    tests_require=test_requirements
+    tests_require=test_requirements,
+    keywords='saml saml2 xmlsec realme nzrealme',
 )

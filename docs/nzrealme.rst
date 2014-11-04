@@ -4,66 +4,26 @@ nzrealme package
 Submodules
 ----------
 
-nzrealme.authrequest module
----------------------------
-
-.. automodule:: nzrealme.authrequest
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nzrealme.encoder module
------------------------
-
-.. automodule:: nzrealme.encoder
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nzrealme.identityprovider module
---------------------------------
-
-.. automodule:: nzrealme.identityprovider
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nzrealme.logonstrength module
+nzrealme.authn_request module
 -----------------------------
 
-.. automodule:: nzrealme.logonstrength
+.. automodule:: nzrealme.authn_request
     :members:
     :undoc-members:
     :show-inheritance:
 
-nzrealme.nzrealme module
+nzrealme.settings module
 ------------------------
 
-.. automodule:: nzrealme.nzrealme
+.. automodule:: nzrealme.settings
     :members:
     :undoc-members:
     :show-inheritance:
 
-nzrealme.serviceprovider module
--------------------------------
+nzrealme.utils module
+---------------------
 
-.. automodule:: nzrealme.serviceprovider
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nzrealme.signer module
-----------------------
-
-.. automodule:: nzrealme.signer
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nzrealme.tokengenerator module
-------------------------------
-
-.. automodule:: nzrealme.tokengenerator
+.. automodule:: nzrealme.utils
     :members:
     :undoc-members:
     :show-inheritance:

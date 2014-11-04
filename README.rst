@@ -14,21 +14,13 @@ NZ RealMe
 Development repository only
 ===========================
 
-Please note that this project is under development and is not ready for use.
+**Please note that this project is under development and is not ready for use.**
 
 This Python package provides an API for integrating your application
 with the New Zealand RealMe login and identity services (formerly "igovt
 logon") using SAML 2.0 messaging.
 
-It is first and foremost a port of `Authen-NZRealMe
-<https://metacpan.org/release/Authen-NZRealMe>`_ (`GitHub
-<https://github.com/catalyst/Authen-NZRealMe>`_) and therefore big thanks to
-the authors of that module:
-
-* Grant McLean <grant@catalyst.net.nz>
-* Haydn Newport <haydn@catalyst.net.nz>
-
-All the **documentation** has been derived from that module!
+The package uses `python-saml2 <https://github.com/onelogin/python-saml>`_
 
 You can also look for information at:
 

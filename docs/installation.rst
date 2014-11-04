@@ -11,11 +11,6 @@ Or, if you have virtualenvwrapper installed::
     $ mkvirtualenv nzrealme
     $ pip install nzrealme
 
-Potential problems
-==================
-
-Installation of xml bindings ``lxml`` and ``dm.xmsec.binding`` `https://github.com/onelogin/python-saml/issues/30`_.
-
 From your ``virtualenv`` root directory clone the repository::
 
   $ git clone https://bitbucket.org/darrylcousins/nzrealme
@@ -41,4 +36,9 @@ Check pep8 with flake8::
 Check coverage::
 
   $ make coverage
+
+Potential problems
+==================
+
+Installation of xml bindings ``lxml`` and ``dm.xmsec.binding`` `https://github.com/onelogin/python-saml/issues/30`.
 

@@ -2,6 +2,9 @@
 import doctest
 import sys
 import os
+import json
+from base64 import b64decode
+from zlib import decompress
 
 
 def get_all_available(paths):
@@ -24,19 +27,26 @@ BUILTINS = [
     'urlparse',
     'base64',
     'pprint',
+    're',
     ]
 
 # and again for the modules used, NB this depends on ``__all`` being defined in
 # module
 MODULES = [
-    'nzrealme.serviceprovider',
-    'nzrealme.authrequest',
-    'nzrealme.logonstrength',
-    'nzrealme.tokengenerator',
-    'nzrealme.identityprovider',
-    'nzrealme.encoder',
-    'nzrealme.signer',
+    'nzrealme.authn_request',
+    'nzrealme.utils',
     ]
+
+
+def loadSettings(f='settings1.json'):
+    filename = os.path.join(os.path.dirname(__file__), 'saml', f)
+    if os.path.exists(filename):
+        stream = open(filename, 'r')
+        settings = json.load(stream)
+        stream.close()
+        return settings
+    else:
+        raise Exception('Settings json file does not exist')
 
 
 def setUp(test):
@@ -51,24 +61,26 @@ def setUp(test):
             name = module
         test.globs[name] = sys.modules[module]
 
+    from onelogin.saml2.settings import OneLogin_Saml2_Settings
+    from onelogin.saml2.utils import OneLogin_Saml2_Utils
+    test.globs['OneLogin_Saml2_Settings'] = OneLogin_Saml2_Settings
+    test.globs['OneLogin_Saml2_Utils'] = OneLogin_Saml2_Utils
+    test.globs['loadSettings'] = loadSettings
+    test.globs['b64decode'] = b64decode
+    test.globs['decompress'] = decompress
+
 
 def tearDown(test):
     pass
 
 
 DOCFILES = [
-    'doctests/nzrealme.rst',
-    'doctests/serviceprovider.rst',
-    'doctests/authrequest.rst',
-    'doctests/logonstrength.rst',
-    'doctests/tokengenerator.rst',
-    'doctests/identityprovider.rst',
+    'doctests/authn_request.rst',
     ]
 
 
 DOCTESTS = [
-    'nzrealme.encoder',
-    'nzrealme.signer',
+    'nzrealme.settings',
     ]
 
 

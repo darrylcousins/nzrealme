@@ -8,5 +8,4 @@ tox
 coverage
 lxml
 dm.xmlsec.binding
-pyOpenSSL
-pytz
+python-saml

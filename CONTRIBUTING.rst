@@ -27,12 +27,6 @@ Fix Bugs
 Look through the GitHub issues for bugs. Anything tagged with "bug"
 is open to whoever wants to implement it.
 
-Implement Features
-~~~~~~~~~~~~~~~~~~
-
-Look through the GitHub issues for features. Anything tagged with "feature"
-is open to whoever wants to implement it.
-
 Write Documentation
 ~~~~~~~~~~~~~~~~~~~
 
@@ -99,13 +93,6 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 2.6, 2.7, 3.3, and 3.4, and for PyPy. Check
+3. The pull request should work for Python 2.7. Check
    https://travis-ci.org/darrylcousins/nzrealme/pull_requests
    and make sure that the tests pass for all supported Python versions.
-
-Tips
-----
-
-To run a subset of tests::
-
-    $ python -m unittest tests.test_nzrealme

@@ -18,18 +18,14 @@ Contents:
    contributing
    authors
    history
+   modules
 
 Doctest documentation:
 
 .. toctree::
    :maxdepth: 1
 
-   NZ RealMe <doctests/nzrealme>
-   Service Provider <doctests/serviceprovider>
-   Authentication Request <doctests/authrequest>
-   Identity Provider <doctests/identityprovider>
-   Token Generator <doctests/tokengenerator>
-   Logon Strength <doctests/logonstrength>
+   Authn Request <doctests/authn_request>
 
 Indices and tables
 ==================
