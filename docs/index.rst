@@ -13,7 +13,6 @@ Contents:
 
    readme
    installation
-   configuration
    usage
    contributing
    authors
